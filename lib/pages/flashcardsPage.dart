@@ -11,7 +11,7 @@ class FlashCardsPage extends StatefulWidget {
 
 class _FlashCardsPageState extends State<FlashCardsPage> {
 
-  final List<CardType> _deck = const [
+  List<CardType> deck = [
     CardType("漢字", "かんじ"),
     CardType("魅惑", "みわく"),
     CardType("付いてる","ついてる"),
@@ -23,8 +23,32 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
   void initState() {
     super.initState();
     setState(() {
-      _card = _deck[0];
+      _card = deck[0];
     });
+  }
+
+  void wrong() {
+    setState(() {
+      deck.removeAt(0);
+      deck.add(_card);
+      _card = deck[0];
+    });
+  }
+
+  void right() {
+    setState(() {
+      deck.removeAt(0);
+      if(deck.length > 0) {
+        _card = deck[0];
+      } else {
+        _card = CardType("", "");
+        toTheMoon();
+      }
+    });
+  }
+
+  void toTheMoon() {
+    Navigator.of(context).pop();
   }
 
   @override
@@ -50,7 +74,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               DragTarget(
-                  onAccept: (data) => print("LEFT"),
+                  onAccept: (data) => wrong(),
                   builder: (context, _, __) => Container(
                     height: 450,
                     width: 270,
@@ -188,7 +212,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                 ],
               ),
               DragTarget(
-                  onAcceptWithDetails: (data) => print("RIGHT"),
+                  onAcceptWithDetails: (data) => right(),
                   builder: (context, _, __) => Container(
                     height: 450,
                     width: 270,
