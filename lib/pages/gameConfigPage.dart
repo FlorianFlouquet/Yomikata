@@ -18,9 +18,9 @@ class GameConfigPage extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(32),
-          child: Center(
-            child: const Text(
+          padding: const EdgeInsets.all(32),
+          child: const Center(
+            child: Text(
               'CHOOSE YOUR DECKS',
               style: TextStyle(
                 color: Color(0xff670D0D),
@@ -40,9 +40,9 @@ class GameConfigPage extends StatelessWidget {
           ),
         ),
         Container(
-          padding: EdgeInsets.all(32),
-          child: Center(
-            child: const Text(
+          padding: const EdgeInsets.all(32),
+          child: const Center(
+            child: Text(
               'CHOOSE A GAME MODE',
               style: TextStyle(
                 color: Color(0xff670D0D),
@@ -68,7 +68,7 @@ class GameConfigPage extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: ( context ) => const FlashCardsPage())
+                  builder: ( context ) => FlashCardsPage())
               );
             },
             style: TextButton.styleFrom(
