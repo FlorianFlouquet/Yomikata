@@ -25,21 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 70,
-          title: Container(
-            padding: const EdgeInsets.all(12),
-            alignment: AlignmentDirectional.centerStart,
-            child: const Icon(
-              Icons.menu,
-              size: 40,
-            ),
-          ),
-          backgroundColor: Color(0xff670D0D),
-        ),
-        body: GameConfigPage(),
-      ),
+      home: GameConfigPage(),
     );
   }
 }
