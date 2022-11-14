@@ -3,15 +3,57 @@ import 'flashcardsPage.dart';
 import '../types/deckType.dart';
 import '../components/deck.dart';
 import '../components/gameMode.dart';
+import '../types/cardType.dart';
 
-class GameConfigPage extends StatelessWidget {
-  const GameConfigPage({Key? key}) : super(key: key);
+class GameConfigPage extends StatefulWidget {
+  GameConfigPage({Key? key}) : super(key: key);
 
   final List<DeckType> decks = const [
-    DeckType("DECK 1", 85, 12),
-    DeckType("DECK 2", 0, 0),
-    DeckType("DECK 3", 23, 1),
+    DeckType(
+      "DECK 1",
+      85,
+      12,
+      [
+        CardType("漢字", "かんじ"),
+        CardType("魅惑", "みわく"),
+        CardType("付いてる","ついてる"),
+      ],
+    ),
+    DeckType(
+      "DECK 2",
+      0,
+      0,
+      [
+        CardType("謙虚", "けんきょ"),
+        CardType("質素", "しっそ"),
+        CardType("羽根","ばね"),
+      ],
+    ),
+    DeckType(
+      "DECK 3",
+      23,
+      1,
+      [
+        CardType("鱗", "うろこ"),
+        CardType("蝋燭", "ろうそく"),
+        CardType("悲嘆","ひたん"),
+      ],
+    ),
   ];
+
+  @override
+  State<GameConfigPage> createState() => _GameConfigPageState();
+}
+
+class _GameConfigPageState extends State<GameConfigPage> {
+
+  late List<DeckType> _selectedDeck = [];
+
+  void addDeck(DeckType deck) {
+    setState(() {
+      _selectedDeck.add(deck);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +89,11 @@ class GameConfigPage extends StatelessWidget {
               height: 170,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: decks.map((deck) {
-                  return Deck(title: deck.name,
-                      highscore: deck.highscore,
-                      attempts: deck.attempts);
+                children: widget.decks.map((deck) {
+                  return Deck(
+                    deck: deck,
+                    addDeck: addDeck,
+                  );
                 }).toList(),
               ),
             ),
@@ -84,7 +127,7 @@ class GameConfigPage extends StatelessWidget {
                   print(context);
                   Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => FlashCardsPage())
+                          builder: (context) => FlashCardsPage(deck: _selectedDeck))
                   );
                 },
                 style: TextButton.styleFrom(

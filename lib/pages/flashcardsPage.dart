@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:yomikata/types/deckType.dart';
 import '../types/cardType.dart';
-import '../pages/gameConfigPage.dart';
 
 class FlashCardsPage extends StatefulWidget {
-  FlashCardsPage({Key? key}) : super(key: key);
+  FlashCardsPage({Key? key, required this.deck}) : super(key: key);
+
+  List<DeckType> deck;
 
   @override
   State<FlashCardsPage> createState() => _FlashCardsPageState();
@@ -12,19 +14,20 @@ class FlashCardsPage extends StatefulWidget {
 
 class _FlashCardsPageState extends State<FlashCardsPage> {
 
-  List<CardType> deck = [
-    CardType("漢字", "かんじ"),
-    CardType("魅惑", "みわく"),
-    CardType("付いてる","ついてる"),
-  ];
-
+  List<CardType> deck = [];
   late CardType _card;
   bool gameEnded = false;
 
   @override
   void initState() {
+    print(widget.deck);
     super.initState();
     setState(() {
+      for(var i = 0; i < widget.deck.length; i++ ) {
+        for(var j = 0; j < widget.deck[i].cards.length; j++) {
+          deck.add(widget.deck[i].cards[j]);
+        }
+      }
       _card = deck[0];
     });
   }
@@ -40,7 +43,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
   void right() {
     setState(() {
       deck.removeAt(0);
-      if(deck.length > 0) {
+      if(deck.isNotEmpty) {
         _card = deck[0];
       } else {
         _card = CardType("", "");

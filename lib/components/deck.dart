@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:yomikata/types/deckType.dart';
 
 class Deck extends StatefulWidget {
-  Deck({Key? key, required this.title, required this.attempts, required this.highscore}) : super(key: key);
+  const Deck({Key? key, required this.deck, required this.addDeck}) : super(key: key);
 
-  final String title;
-  final int attempts;
-  final double highscore;
+  final DeckType deck;
+  final Function addDeck;
 
   @override
   State<Deck> createState() => _DeckState();
@@ -18,6 +18,7 @@ class _DeckState extends State<Deck> {
   void tapped() {
     setState(() {
        clicked = !clicked;
+       widget.addDeck(widget.deck);
     });
   }
 
@@ -44,7 +45,7 @@ class _DeckState extends State<Deck> {
                 margin: EdgeInsets.all(15),
                 alignment: AlignmentDirectional.topStart,
                 child: Text(
-                  widget.title,
+                  widget.deck.name,
                   style: TextStyle(
                     color: clicked ? Colors.white : Color(0xff670D0D),
                     fontWeight: FontWeight.bold,
@@ -72,7 +73,7 @@ class _DeckState extends State<Deck> {
                           width: 70,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "${widget.attempts}",
+                            "${widget.deck.attempts}",
                             style: TextStyle(
                               color: clicked ? Colors.white : Color(0xff670D0D),
                               fontSize: 24,
@@ -95,7 +96,7 @@ class _DeckState extends State<Deck> {
                           width: 70,
                           alignment: Alignment.centerRight,
                           child: Text(
-                            "${widget.highscore}%",
+                            "${widget.deck.highscore}%",
                             style: TextStyle(
                               color: clicked ? Colors.white : Color(0xff670D0D),
                               fontSize: 24,
