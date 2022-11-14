@@ -28,6 +28,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
           deck.add(widget.deck[i].cards[j]);
         }
       }
+      deck.shuffle();
       _card = deck[0];
     });
   }
@@ -46,16 +47,11 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
       if(deck.isNotEmpty) {
         _card = deck[0];
       } else {
-        _card = CardType("", "");
         setState(() {
           gameEnded = true;
         });
       }
     });
-  }
-
-  void toTheMoon() {
-    Navigator.of(context).pop();
   }
 
   @override

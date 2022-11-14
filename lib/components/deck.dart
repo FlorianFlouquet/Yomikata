@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:yomikata/types/deckType.dart';
 
 class Deck extends StatefulWidget {
-  const Deck({Key? key, required this.deck, required this.addDeck}) : super(key: key);
+  const Deck({Key? key, required this.deck, required this.addDeck, required this.removeDeck}) : super(key: key);
 
   final DeckType deck;
   final Function addDeck;
+  final Function removeDeck;
 
   @override
   State<Deck> createState() => _DeckState();
@@ -17,8 +18,12 @@ class _DeckState extends State<Deck> {
 
   void tapped() {
     setState(() {
-       clicked = !clicked;
-       widget.addDeck(widget.deck);
+      if(clicked) {
+        widget.removeDeck(widget.deck);
+      } else {
+        widget.addDeck(widget.deck);
+      }
+      clicked = !clicked;
     });
   }
 

@@ -55,6 +55,12 @@ class _GameConfigPageState extends State<GameConfigPage> {
     });
   }
 
+  void removeDeck(DeckType deck) {
+    setState(() {
+      _selectedDeck.remove(deck);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,6 +99,7 @@ class _GameConfigPageState extends State<GameConfigPage> {
                   return Deck(
                     deck: deck,
                     addDeck: addDeck,
+                    removeDeck: removeDeck,
                   );
                 }).toList(),
               ),
