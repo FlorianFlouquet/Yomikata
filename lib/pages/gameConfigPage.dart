@@ -76,7 +76,7 @@ class _GameConfigPageState extends State<GameConfigPage> {
             ),
           ),
         ),
-        body: Column(
+        body: ListView(
           children: [
             Container(
               padding: const EdgeInsets.all(32),
@@ -128,19 +128,20 @@ class _GameConfigPageState extends State<GameConfigPage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.all(32),
+              margin: EdgeInsets.all(45),
               child: TextButton(
                 onPressed: () {
                   print(context);
                   Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => FlashCardsPage(deck: _selectedDeck))
+                    MaterialPageRoute(
+                      builder: (context) => FlashCardsPage(deck: _selectedDeck))
                   );
                 },
                 style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Color(0xff670D0D),
-                    padding: EdgeInsets.fromLTRB(50, 30, 50, 30)
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xff670D0D),
+                  padding: EdgeInsets.fromLTRB(50, 30, 50, 30),
+                  maximumSize: Size(80, 80)
                 ),
                 child: Text(
                   "START",
