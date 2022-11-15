@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import './components/deck.dart';
-import './components/gameMode.dart';
-import './types/deckType.dart';
 import './pages/gameConfigPage.dart';
+import 'mongoDb.dart';
 
 void main() {
   runApp(const MyApp());

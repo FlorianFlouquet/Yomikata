@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yomikata/service/deckService.dart';
+import '../mongoDb.dart';
 import 'flashcardsPage.dart';
 import '../types/deckType.dart';
 import '../components/deck.dart';
@@ -6,7 +8,7 @@ import '../components/gameMode.dart';
 import '../types/cardType.dart';
 
 class GameConfigPage extends StatefulWidget {
-  GameConfigPage({Key? key}) : super(key: key);
+  const GameConfigPage({Key? key}) : super(key: key);
 
   final List<DeckType> decks = const [
     DeckType(
@@ -48,6 +50,29 @@ class GameConfigPage extends StatefulWidget {
 class _GameConfigPageState extends State<GameConfigPage> {
 
   late List<DeckType> _selectedDeck = [];
+
+  late List<DeckType> decks = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getData();
+  }
+
+  _getData() async {
+    var result = await DeckService.getDeck();
+    for(var i = 0; i < result.length; i++) {
+      List<dynamic> list = result[i]["cards"];
+      List<CardType> listCards = [];
+      for(var j = 0; j < list.length; j++ ) {
+        listCards.add(new CardType(list[j]["kanji"], list[j]["pronun"]));
+      }
+      setState(() {
+        decks.add(DeckType(result[i]["name"], result[i]["highscore"], result[i]["attempts"], listCards));
+      });
+    }
+  }
 
   void addDeck(DeckType deck) {
     setState(() {
@@ -91,11 +116,11 @@ class _GameConfigPageState extends State<GameConfigPage> {
                 ),
               ),
             ),
-            Container(
+            decks.isEmpty ? Text("LOADING") : Container(
               height: 170,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: widget.decks.map((deck) {
+                children: decks.map((deck) {
                   return Deck(
                     deck: deck,
                     addDeck: addDeck,
