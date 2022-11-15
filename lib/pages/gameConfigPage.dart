@@ -130,18 +130,19 @@ class _GameConfigPageState extends State<GameConfigPage> {
             Container(
               margin: EdgeInsets.all(45),
               child: TextButton(
-                onPressed: () {
-                  print(context);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => FlashCardsPage(deck: _selectedDeck))
-                  );
+                onPressed: _selectedDeck.length == 0 ?
+                  null :
+                  () {
+                    print(context);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => FlashCardsPage(deck: _selectedDeck))
+                    );
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Color(0xff670D0D),
+                  backgroundColor: _selectedDeck.length == 0 ? Colors.grey : Color(0xff670D0D),
                   padding: EdgeInsets.fromLTRB(50, 30, 50, 30),
-                  maximumSize: Size(80, 80)
                 ),
                 child: Text(
                   "START",
