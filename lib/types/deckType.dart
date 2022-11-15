@@ -1,11 +1,15 @@
+import 'package:yomikata/types/cardType.dart';
+
 class DeckType {
   final String _name;
   final double _highscore;
   final int _attempts;
+  final List<CardType> _cards;
 
   String get name => _name;
   double get highscore => _highscore;
   int get attempts => _attempts;
+  List<CardType> get cards => _cards;
 
-  const DeckType(this._name, this._highscore, this._attempts);
+  const DeckType(this._name, this._highscore, this._attempts, this._cards);
 }
