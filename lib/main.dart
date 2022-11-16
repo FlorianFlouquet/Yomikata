@@ -51,25 +51,23 @@ class _RouterState extends State<Router> {
         onTap: _onItemTapped,
         selectedItemColor: Color(0xffd46666),
         unselectedItemColor: Colors.white,
+        iconSize: 28,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              size: 32,
             ),
             label: "Home",
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.filter_none,
-                size: 32,
               ),
               label: "Decks"
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.add_circle_outline,
-                size: 32,
               ),
               label: "Add"
           ),
