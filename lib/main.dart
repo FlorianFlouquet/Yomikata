@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yomikata/pages/addDeckPage.dart';
 import './pages/gameConfigPage.dart';
 import 'mongoDb.dart';
 
@@ -13,7 +14,67 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: GameConfigPage(),
+      home: Router(),
+    );
+  }
+}
+
+class Router extends StatefulWidget {
+  const Router({Key? key}) : super(key: key);
+
+  @override
+  State<Router> createState() => _RouterState();
+}
+
+class _RouterState extends State<Router> {
+
+  int _selectedItem = 0;
+
+  static const List<Widget> _pagesList = <Widget>[
+    GameConfigPage(),
+    AddDeckPage(),
+    AddDeckPage()
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedItem = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pagesList.elementAt(_selectedItem),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xff670D0D),
+        onTap: _onItemTapped,
+        selectedItemColor: Color(0xffd46666),
+        unselectedItemColor: Colors.white,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              size: 32,
+            ),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.filter_none,
+                size: 32,
+              ),
+              label: "Decks"
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.add_circle_outline,
+                size: 32,
+              ),
+              label: "Add"
+          ),
+        ],
+      ),
     );
   }
 }
