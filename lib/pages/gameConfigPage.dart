@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:yomikata/components/customAppBar.dart';
 import 'package:yomikata/pages/addDeckPage.dart';
 import 'package:yomikata/service/deckService.dart';
@@ -103,7 +104,15 @@ class _GameConfigPageState extends State<GameConfigPage> {
             ),
           ),
         ),
-        decks.isEmpty ? Text("LOADING") : Container(
+        decks.isEmpty
+        ? Container(
+          height: 170,
+          child: LoadingAnimationWidget.fourRotatingDots(
+            color: Color(0xff670D0D),
+            size: 130.0,
+          ),
+        )
+        : Container(
           height: 170,
           child: ListView(
             scrollDirection: Axis.horizontal,
