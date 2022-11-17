@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:yomikata/components/customAppBar.dart';
-import 'package:yomikata/pages/addDeckPage.dart';
 import 'package:yomikata/service/deckService.dart';
 import 'flashcardsPage.dart';
 import '../types/deckType.dart';
@@ -20,7 +18,7 @@ class GameConfigPage extends StatefulWidget {
       [
         CardType("漢字", "かんじ"),
         CardType("魅惑", "みわく"),
-        CardType("付いてる","ついてる"),
+        CardType("付いてる", "ついてる"),
       ],
     ),
     DeckType(
@@ -30,7 +28,7 @@ class GameConfigPage extends StatefulWidget {
       [
         CardType("謙虚", "けんきょ"),
         CardType("質素", "しっそ"),
-        CardType("羽根","ばね"),
+        CardType("羽根", "ばね"),
       ],
     ),
     DeckType(
@@ -40,7 +38,7 @@ class GameConfigPage extends StatefulWidget {
       [
         CardType("鱗", "うろこ"),
         CardType("蝋燭", "ろうそく"),
-        CardType("悲嘆","ひたん"),
+        CardType("悲嘆", "ひたん"),
       ],
     ),
   ];
@@ -50,7 +48,6 @@ class GameConfigPage extends StatefulWidget {
 }
 
 class _GameConfigPageState extends State<GameConfigPage> {
-
   late List<DeckType> _selectedDeck = [];
   late List<DeckType> decks = [];
 
@@ -63,14 +60,15 @@ class _GameConfigPageState extends State<GameConfigPage> {
 
   _getData() async {
     var result = await DeckService.getDeck();
-    for(var i = 0; i < result.length; i++) {
+    for (var i = 0; i < result.length; i++) {
       List<dynamic> list = result[i]["cards"];
       List<CardType> listCards = [];
-      for(var j = 0; j < list.length; j++ ) {
+      for (var j = 0; j < list.length; j++) {
         listCards.add(new CardType(list[j]["kanji"], list[j]["pronun"]));
       }
       setState(() {
-        decks.add(DeckType(result[i]["name"], result[i]["highscore"], result[i]["attempts"], listCards));
+        decks.add(DeckType(result[i]["name"], result[i]["highscore"],
+            result[i]["attempts"], listCards));
       });
     }
   }
@@ -105,26 +103,26 @@ class _GameConfigPageState extends State<GameConfigPage> {
           ),
         ),
         decks.isEmpty
-        ? Container(
-          height: 170,
-          child: LoadingAnimationWidget.fourRotatingDots(
-            color: Color(0xff670D0D),
-            size: 130.0,
-          ),
-        )
-        : Container(
-          height: 170,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: decks.map((deck) {
-              return Deck(
-                deck: deck,
-                addDeck: addDeck,
-                removeDeck: removeDeck,
-              );
-            }).toList(),
-          ),
-        ),
+            ? Container(
+                height: 170,
+                child: LoadingAnimationWidget.fourRotatingDots(
+                  color: Color(0xff670D0D),
+                  size: 130.0,
+                ),
+              )
+            : Container(
+                height: 170,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: decks.map((deck) {
+                    return Deck(
+                      deck: deck,
+                      addDeck: addDeck,
+                      removeDeck: removeDeck,
+                    );
+                  }).toList(),
+                ),
+              ),
         Container(
           padding: const EdgeInsets.all(32),
           child: const Center(
@@ -151,18 +149,17 @@ class _GameConfigPageState extends State<GameConfigPage> {
         Container(
           margin: EdgeInsets.all(45),
           child: TextButton(
-            onPressed: _selectedDeck.length == 0 ?
-            null :
-                () {
-              print(context);
-              Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => FlashCardsPage(deck: _selectedDeck))
-              );
-            },
+            onPressed: _selectedDeck.length == 0
+                ? null
+                : () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            FlashCardsPage(deck: _selectedDeck)));
+                  },
             style: TextButton.styleFrom(
               foregroundColor: Colors.white,
-              backgroundColor: _selectedDeck.length == 0 ? Colors.grey : Color(0xff670D0D),
+              backgroundColor:
+                  _selectedDeck.length == 0 ? Colors.grey : Color(0xff670D0D),
               padding: EdgeInsets.fromLTRB(50, 30, 50, 30),
             ),
             child: Text(

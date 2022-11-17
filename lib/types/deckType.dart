@@ -12,4 +12,9 @@ class DeckType {
   List<CardType> get cards => _cards;
 
   const DeckType(this._name, this._highscore, this._attempts, this._cards);
+
+  @override
+  String toString() {
+    return 'DeckType{_name: $_name, _highscore: $_highscore, _attempts: $_attempts, _cards: $_cards}';
+  }
 }
