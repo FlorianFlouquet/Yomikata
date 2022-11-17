@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:yomikata/pages/deckMakerPage.dart';
+
+import '../service/deckService.dart';
+import '../types/cardType.dart';
+import '../types/deckType.dart';
 
 class AddDeckPage extends StatefulWidget {
   const AddDeckPage({Key? key}) : super(key: key);
@@ -8,77 +14,130 @@ class AddDeckPage extends StatefulWidget {
 }
 
 class _AddDeckPageState extends State<AddDeckPage> {
+  late List<DeckType> decks = [];
 
-  final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getData();
+  }
 
-  String _deckName = '';
-  String _text1 = '';
-  String _text2 = '';
+  _getData() async {
+    var result = await DeckService.getDeck();
+    for (var i = 0; i < result.length; i++) {
+      List<dynamic> list = result[i]["cards"];
+      List<CardType> listCards = [];
+      for (var j = 0; j < list.length; j++) {
+        listCards.add(CardType(list[j]["kanji"], list[j]["pronun"]));
+      }
+      setState(() {
+        decks.add(DeckType(result[i]["name"], result[i]["highscore"],
+            result[i]["attempts"], listCards));
+      });
+    }
+  }
+
+  _updateDeck(String deckName, DeckType updatedDeck) async {
+    print(updatedDeck);
+    await DeckService.updateDeck(deckName, updatedDeck);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [
-          Row(
-            children: [
-              Text("Nom du Deck: "),
-              Expanded(
-                child: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      _deckName = value;
-                    });
-                  },
-                )
-              ),
-            ],
-          ),
-          Form(
-            key: _formKey,
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              children: <Widget>[
-                Text("Kanji"),
-                TextFormField(
-                  validator: (value) {
-                    if(value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    setState(() {
-                      _text1 = value;
-                    });
-                  },
-                ),
-                Text("Pronunciation"),
-                TextFormField(
-                  validator: (value) {
-                    if(value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    setState(() {
-                      _text2 = value;
-                    });
-                  },
-                ),
-              ],
+    return ListView(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
+          height: 50,
+          child: ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                  backgroundColor:
+                      const MaterialStatePropertyAll(Color(0xff670D0D)),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                  ))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    "New Deck",
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                  Center(
+                    child: Icon(
+                      Icons.add_circle,
+                      size: 28,
+                    ),
+                  )
+                ],
+              )),
+        ),
+        Container(
+          height: 2,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.black,
+        ),
+        Container(
+          margin: const EdgeInsets.all(20),
+          child: const Text(
+            "SELECT A DECK",
+            style: TextStyle(
+              color: Color(0xff670D0D),
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          Text(_text1),
-          Text(_text2),
-          Text(_deckName),
-          ElevatedButton(
-              onPressed: () {
-                _formKey.currentState!.validate();
-              },
-              style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(20),
-                backgroundColor: Color(0xff670D0D),
+        ),
+        decks.isEmpty
+            ? Container(
+                height: 130,
+                child: LoadingAnimationWidget.fourRotatingDots(
+                  color: const Color(0xff670D0D),
+                  size: 130.0,
+                ),
+              )
+            : Column(
+                children: decks
+                    .map((item) => (GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  new DeckMakerPage(deck: item, update: _updateDeck)
+                              ));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 5),
+                            height: 100,
+                            width: MediaQuery.of(context).size.width,
+                            color: const Color(0xff670D0D),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  item.name,
+                                  style: const TextStyle(
+                                    fontSize: 32,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  "Nombre de carte: ${item.cards.length}",
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        )))
+                    .toList(),
               ),
-              child: Icon(Icons.add)
-          ),
-        ],
-      );
+      ],
+    );
   }
 }
