@@ -10,39 +10,6 @@ import '../types/cardType.dart';
 class GameConfigPage extends StatefulWidget {
   const GameConfigPage({Key? key}) : super(key: key);
 
-  final List<DeckType> decks = const [
-    DeckType(
-      "DECK 1",
-      85,
-      12,
-      [
-        CardType("漢字", "かんじ"),
-        CardType("魅惑", "みわく"),
-        CardType("付いてる", "ついてる"),
-      ],
-    ),
-    DeckType(
-      "DECK 2",
-      0,
-      0,
-      [
-        CardType("謙虚", "けんきょ"),
-        CardType("質素", "しっそ"),
-        CardType("羽根", "ばね"),
-      ],
-    ),
-    DeckType(
-      "DECK 3",
-      23,
-      1,
-      [
-        CardType("鱗", "うろこ"),
-        CardType("蝋燭", "ろうそく"),
-        CardType("悲嘆", "ひたん"),
-      ],
-    ),
-  ];
-
   @override
   State<GameConfigPage> createState() => _GameConfigPageState();
 }
