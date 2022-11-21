@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yomikata/types/cardType.dart';
 import 'package:yomikata/types/deckType.dart';
+import 'package:collection/collection.dart';
 
 class DeckMakerPage extends StatefulWidget {
   const DeckMakerPage({Key? key, required this.deck, required this.update}) : super(key: key);
@@ -39,11 +40,9 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
         children: [
           Text("Nom du deck: ${modifiableDeck.name}"),
           Column(
-            children: modifiableDeck.cards.map((card) => (
-              Container(
-                child: Text("${card.kanji} ${card.pronun}"),
-              )
-            )).toList(),
+            children: modifiableDeck.cards.mapIndexed((index, card) =>
+              Text("${index+1} ${card.kanji} ${card.pronun}")
+            ).toList(),
           ),
           Form(
             key: _formKey,
@@ -104,24 +103,24 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
                   _controllers[1].clear();
                 },
                 style: ElevatedButton.styleFrom(
-                  shape: CircleBorder(),
+                  shape: RoundedRectangleBorder(),
                   padding: EdgeInsets.all(20),
                 ),
-                child: const Icon(Icons.add)
+                child: const Text("ADD")
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 40),
+            margin: EdgeInsets.only(top: 20),
             child: ElevatedButton(
               onPressed: () {
                 widget.update(modifiableDeck.name, modifiableDeck);
               },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.amber,
-                  shape: CircleBorder(),
+                  shape: RoundedRectangleBorder(),
                   padding: EdgeInsets.all(20),
                 ),
-                child: const Icon(Icons.add)
+                child: const Text("SAVE")
             ),
           )
         ],
