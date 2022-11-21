@@ -95,51 +95,47 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
                   Row(
                     children: [
                       Expanded(
-                          child: TextField(
-                            controller: _controllers[1],
-                            decoration: InputDecoration(
-                                hintText: 'Pronunciation',
-                                suffixIcon: IconButton(
-                                  onPressed: _controllers[1].clear,
-                                  icon: const Icon(Icons.clear),
-                                )
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                pronun = _controllers[1].text;
-                              });
-                            },
-                          )
+                        child: TextField(
+                          controller: _controllers[1],
+                          decoration: InputDecoration(
+                            hintText: 'Pronunciation',
+                            suffixIcon: IconButton(
+                              onPressed: _controllers[1].clear,
+                              icon: const Icon(Icons.clear),
+                            )
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              pronun = _controllers[1].text;
+                            });
+                          },
+                        )
                       ),
                     ],
-                  )
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _isDisable() ?
+                      null :
+                      setState(() {
+                        modifiableDeck.cards.add(CardType(kanji, pronun));
+                      });
+                      _controllers[0].clear();
+                      _controllers[1].clear();
+                      setState(() {
+                        kanji = "";
+                        pronun = "";
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.only(bottom: 19, left: 35, top: 19, right: 35),
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text("ADD")
+                  ),
                 ],
               ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            child: TextButton(
-                onPressed: () {
-                  _isDisable() ?
-                  null :
-                  setState(() {
-                    modifiableDeck.cards.add(CardType(kanji, pronun));
-                  });
-                  _controllers[0].clear();
-                  _controllers[1].clear();
-                  setState(() {
-                    kanji = "";
-                    pronun = "";
-                  });
-
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.all(23),
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                ),
-                child: const Text("ADD")
             ),
           ),
           Container(
