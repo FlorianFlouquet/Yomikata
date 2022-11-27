@@ -13,23 +13,23 @@ class FlashCardsPage extends StatefulWidget {
 }
 
 class _FlashCardsPageState extends State<FlashCardsPage> {
-
   List<CardType> deck = [];
   late CardType _card;
   bool gameEnded = false;
+  late String _draggedCardText;
 
   @override
   void initState() {
-    print(widget.deck);
     super.initState();
     setState(() {
-      for(var i = 0; i < widget.deck.length; i++ ) {
-        for(var j = 0; j < widget.deck[i].cards.length; j++) {
+      for (var i = 0; i < widget.deck.length; i++) {
+        for (var j = 0; j < widget.deck[i].cards.length; j++) {
           deck.add(widget.deck[i].cards[j]);
         }
       }
       deck.shuffle();
       _card = deck[0];
+      _draggedCardText = _card.kanji;
     });
   }
 
@@ -38,19 +38,37 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
       deck.removeAt(0);
       deck.add(_card);
       _card = deck[0];
+      _draggedCardText = _card.kanji;
     });
   }
 
   void right() {
     setState(() {
       deck.removeAt(0);
-      if(deck.isNotEmpty) {
+      if (deck.isNotEmpty) {
         _card = deck[0];
+        _draggedCardText = _card.kanji;
       } else {
         setState(() {
           gameEnded = true;
         });
       }
+    });
+  }
+
+  void changeDraggedCardText() {
+    setState(() {
+      if(_draggedCardText == _card.kanji) {
+        _draggedCardText = _card.pronun;
+      } else {
+        _draggedCardText = _card.kanji;
+      }
+    });
+  }
+
+  void onDraggableCancelled(Velocity velocity, Offset offest) {
+    setState(() {
+      _draggedCardText = _card.kanji;
     });
   }
 
@@ -70,15 +88,15 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
           children: [
             DragTarget(
                 onAccept: (data) => wrong(),
-                builder: (context, _, __) => Container(
-                  height: 450,
-                  width: 270,
-                )
-            ),
+                builder: (context, _, __) =>
+                    Container(
+                      height: 450,
+                      width: 270,
+                    )),
             Column(
               children: [
                 Container(
-                  height: 600,
+                  height: 550,
                   padding: EdgeInsets.all(20),
                   child: Center(
                     child: Stack(
@@ -118,6 +136,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                           ),
                         ),
                         Draggable(
+                          onDraggableCanceled: onDraggableCancelled,
                           data: "OUI",
                           feedback: Container(
                             width: 270,
@@ -132,7 +151,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                               ),
                               child: Center(
                                 child: Text(
-                                  _card.kanji,
+                                  _draggedCardText,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 32,
@@ -147,6 +166,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                             color: const Color.fromRGBO(0, 0, 0, 0),
                           ),
                           child: FlipCard(
+                            onFlip: changeDraggedCardText,
                             fill: Fill.fillBack,
                             direction: FlipDirection.HORIZONTAL,
                             front: Container(
@@ -208,11 +228,11 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
             ),
             DragTarget(
                 onAcceptWithDetails: (data) => right(),
-                builder: (context, _, __) => Container(
-                  height: 450,
-                  width: 270,
-                )
-            ),
+                builder: (context, _, __) =>
+                    Container(
+                      height: 450,
+                      width: 270,
+                    )),
           ],
         ),
       )
@@ -235,10 +255,7 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                   ),
                   child: Text(
                     'Homepage',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
               ),
@@ -251,14 +268,10 @@ class _FlashCardsPageState extends State<FlashCardsPage> {
                     Navigator.pop(context);
                   },
                   style: TextButton.styleFrom(
-                      backgroundColor: Color(0xff670D0D)
-                  ),
+                      backgroundColor: Color(0xff670D0D)),
                   child: Text(
                     'Text review',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
               )
