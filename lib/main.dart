@@ -52,6 +52,7 @@ class _RouterState extends State<Router> {
         onTap: _onItemTapped,
         selectedItemColor: Color(0xffd46666),
         unselectedItemColor: Colors.white,
+        currentIndex: _selectedItem,
         iconSize: 28,
         items: const [
           BottomNavigationBarItem(
