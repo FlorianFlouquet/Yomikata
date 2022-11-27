@@ -48,7 +48,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
     return ListView(
       children: [
         Container(
-          margin: const EdgeInsets.only(left: 100, top: 20, right: 100, bottom: 20),
+          margin: const EdgeInsets.only(left: 90, top: 20, right: 90, bottom: 20),
           height: 50,
           child: ElevatedButton(
               onPressed: () {},
@@ -70,7 +70,6 @@ class _AddDeckPageState extends State<AddDeckPage> {
                   Center(
                     child: Icon(
                       Icons.add_circle,
-                      size: 28,
                     ),
                   )
                 ],
