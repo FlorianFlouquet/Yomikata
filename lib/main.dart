@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yomikata/pages/addDeckPage.dart';
+import './pages/profilePage.dart';
 import './pages/gameConfigPage.dart';
 import 'mongoDb.dart';
 
@@ -33,7 +34,7 @@ class _RouterState extends State<Router> {
   static const List<Widget> _pagesList = <Widget>[
     GameConfigPage(),
     AddDeckPage(),
-    AddDeckPage()
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -67,9 +68,9 @@ class _RouterState extends State<Router> {
           ),
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.add_circle_outline,
+                Icons.person,
               ),
-              label: "Add"
+              label: "Profile"
           ),
         ],
       ),
