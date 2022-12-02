@@ -15,6 +15,7 @@ class AddDeckPage extends StatefulWidget {
 }
 
 class _AddDeckPageState extends State<AddDeckPage> {
+  // States
   late List<DeckType> decks = [];
 
   @override
@@ -24,17 +25,24 @@ class _AddDeckPageState extends State<AddDeckPage> {
     _getData();
   }
 
+  /**
+   * Get all decks from DB and add them to the state "decks"
+   */
   _getData() async {
+    // clear the state out
     setState(() {
       decks = [];
     });
+    // fetch decks and store them in a variable
     var result = await DeckService.getDeck();
     for (var i = 0; i < result.length; i++) {
+      // store cards from a single deck
       List<dynamic> list = result[i]["cards"];
       List<CardType> listCards = [];
       for (var j = 0; j < list.length; j++) {
         listCards.add(CardType(list[j]["kanji"], list[j]["pronun"]));
       }
+      // add the cards in a new deck which is send to decks
       setState(() {
         decks.add(DeckType(result[i]["name"], result[i]["highscore"],
             result[i]["attempts"], listCards));
@@ -42,12 +50,17 @@ class _AddDeckPageState extends State<AddDeckPage> {
     }
   }
 
+  /**
+   * Update a deck by its name
+   */
   _updateDeck(String deckName, DeckType updatedDeck) async {
     await DeckService.updateDeck(deckName, updatedDeck);
   }
 
+  /**
+   * Add an empty deck to the DB
+   */
   _addDeck() async {
-    DeckType newDeck = new DeckType("Deck 4", 0, 0, []);
     await DeckService.addDeck();
     this._getData();
   }
