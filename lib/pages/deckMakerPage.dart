@@ -21,6 +21,8 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
   final List<TextEditingController> _controllers = [TextEditingController(), TextEditingController()];
   String kanji = "";
   String pronun = "";
+  late FocusNode focusKanji;
+  late FocusNode focusPronun;
 
   @override
   void initState() {
@@ -28,6 +30,8 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
     super.initState();
     setState(() {
       modifiableDeck = widget.deck;
+      focusKanji = FocusNode();
+      focusPronun = FocusNode();
     });
   }
 
@@ -49,6 +53,97 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
       body: ListView(
         children: [
           Container(
+            margin: EdgeInsets.only(top: 10),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                          child: TextField(
+                            focusNode: focusKanji,
+                            controller: _controllers[0],
+                            decoration: InputDecoration(
+                                hintText: 'Kanji',
+                                suffixIcon: IconButton(
+                                  onPressed: _controllers[0].clear,
+                                  icon: const Icon(Icons.clear),
+                                )
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                kanji = _controllers[0].text;
+                              });
+                            },
+                            onEditingComplete: () => focusPronun.requestFocus(),
+                          )
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                          child: TextField(
+                            focusNode: focusPronun,
+                            controller: _controllers[1],
+                            decoration: InputDecoration(
+                                hintText: 'Pronunciation',
+                                suffixIcon: IconButton(
+                                  onPressed: _controllers[1].clear,
+                                  icon: const Icon(Icons.clear),
+                                )
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                pronun = _controllers[1].text;
+                              });
+                            },
+                          )
+                      ),
+                    ],
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        _isDisable() ?
+                        null :
+                        setState(() {
+                          modifiableDeck.cards.add(CardType(kanji, pronun));
+                        });
+                        _controllers[0].clear();
+                        _controllers[1].clear();
+                        setState(() {
+                          kanji = "";
+                          pronun = "";
+                        });
+                        focusKanji.requestFocus();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.only(bottom: 19, left: 35, top: 19, right: 35),
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text("ADD")
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20),
+            child: ElevatedButton(
+                onPressed: () {
+                  widget.update(modifiableDeck.name, modifiableDeck);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.amber,
+                  shape: RoundedRectangleBorder(),
+                  padding: EdgeInsets.all(20),
+                ),
+                child: const Text("SAVE")
+            ),
+          ),
+          Container(
             padding: const EdgeInsets.only(left: 10),
             height: 40,
             alignment: AlignmentDirectional.centerStart,
@@ -64,93 +159,6 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
             children: modifiableDeck.cards.mapIndexed((index, card) =>
               KanjiDisplay(index: index, kanji: card.kanji, pronun: card.pronun)
             ).toList(),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                          child: TextField(
-                            controller: _controllers[0],
-                            decoration: InputDecoration(
-                                hintText: 'Kanji',
-                                suffixIcon: IconButton(
-                                  onPressed: _controllers[0].clear,
-                                  icon: const Icon(Icons.clear),
-                                )
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                kanji = _controllers[0].text;
-                              });
-                            },
-                          )
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _controllers[1],
-                          decoration: InputDecoration(
-                            hintText: 'Pronunciation',
-                            suffixIcon: IconButton(
-                              onPressed: _controllers[1].clear,
-                              icon: const Icon(Icons.clear),
-                            )
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              pronun = _controllers[1].text;
-                            });
-                          },
-                        )
-                      ),
-                    ],
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      _isDisable() ?
-                      null :
-                      setState(() {
-                        modifiableDeck.cards.add(CardType(kanji, pronun));
-                      });
-                      _controllers[0].clear();
-                      _controllers[1].clear();
-                      setState(() {
-                        kanji = "";
-                        pronun = "";
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.only(bottom: 19, left: 35, top: 19, right: 35),
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text("ADD")
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20),
-            child: ElevatedButton(
-              onPressed: () {
-                widget.update(modifiableDeck.name, modifiableDeck);
-              },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  shape: RoundedRectangleBorder(),
-                  padding: EdgeInsets.all(20),
-                ),
-                child: const Text("SAVE")
-            ),
           ),
         ],
       ),

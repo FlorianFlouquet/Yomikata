@@ -22,7 +22,10 @@ class MongoDatabase {
     var newCards = [];
 
     for(var i = 0; i < updatedDeck.cards.length; i++) {
-      var card = {"kanji": updatedDeck.cards[i].kanji, "pronun": updatedDeck.cards[i].pronun};
+      var card = {
+        "kanji": updatedDeck.cards[i].kanji,
+        "pronun": updatedDeck.cards[i].pronun
+      };
       newCards.add(card);
     }
 
