@@ -25,10 +25,10 @@ class _AddDeckPageState extends State<AddDeckPage> {
   }
 
   _getData() async {
-    var result = await DeckService.getDeck();
     setState(() {
       decks = [];
     });
+    var result = await DeckService.getDeck();
     for (var i = 0; i < result.length; i++) {
       List<dynamic> list = result[i]["cards"];
       List<CardType> listCards = [];
