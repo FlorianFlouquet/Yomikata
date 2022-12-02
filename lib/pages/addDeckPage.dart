@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:yomikata/components/deck.dart';
 import 'package:yomikata/pages/deckMakerPage.dart';
 
 import '../service/deckService.dart';
@@ -25,6 +26,9 @@ class _AddDeckPageState extends State<AddDeckPage> {
 
   _getData() async {
     var result = await DeckService.getDeck();
+    setState(() {
+      decks = [];
+    });
     for (var i = 0; i < result.length; i++) {
       List<dynamic> list = result[i]["cards"];
       List<CardType> listCards = [];
@@ -39,8 +43,13 @@ class _AddDeckPageState extends State<AddDeckPage> {
   }
 
   _updateDeck(String deckName, DeckType updatedDeck) async {
-    print(updatedDeck);
     await DeckService.updateDeck(deckName, updatedDeck);
+  }
+
+  _addDeck() async {
+    DeckType newDeck = new DeckType("Deck 4", 0, 0, []);
+    await DeckService.addDeck();
+    this._getData();
   }
 
   @override
@@ -51,7 +60,7 @@ class _AddDeckPageState extends State<AddDeckPage> {
           margin: const EdgeInsets.only(left: 90, top: 20, right: 90, bottom: 20),
           height: 50,
           child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () => _addDeck(),
               style: ButtonStyle(
                   backgroundColor:
                       const MaterialStatePropertyAll(Color(0xff670D0D)),

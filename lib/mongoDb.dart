@@ -33,4 +33,23 @@ class MongoDatabase {
       where.eq('name', deckName), modify.set('cards', newCards)
     );
   }
+  
+  static addDeck() async {
+    var db = await Db.create(MONGO_URL);
+    await db.open();
+    inspect(db);
+    var collection = db.collection(COLLECTION_NAME);
+    int countCollection = 0;
+    await collection.count().then((data) {
+      countCollection = data;
+    });
+    String deckName = "Deck ${countCollection + 1}";
+
+    collection.insertOne({
+      "highscore": 0.0,
+      "attempts": 0,
+      "name": deckName,
+      "cards": [],
+    });
+  }
 }

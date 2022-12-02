@@ -13,4 +13,9 @@ class DeckService {
     WidgetsFlutterBinding.ensureInitialized();
     await MongoDatabase.save(deckName, updatedDeck);
   }
+
+  static addDeck() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await MongoDatabase.addDeck();
+  }
 }
