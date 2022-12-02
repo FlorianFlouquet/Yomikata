@@ -16,11 +16,17 @@ class DeckMakerPage extends StatefulWidget {
 
 class _DeckMakerPageState extends State<DeckMakerPage> {
 
-  late DeckType modifiableDeck;
-  final _formKey = GlobalKey<FormState>();
-  final List<TextEditingController> _controllers = [TextEditingController(), TextEditingController()];
+  //States
   String kanji = "";
   String pronun = "";
+
+  // State of the deck before sending it to the db
+  late DeckType modifiableDeck;
+  // I have no fucking idea of it's purpose, but it's here
+  final _formKey = GlobalKey<FormState>();
+  // add methods for handling textInput
+  final List<TextEditingController> _controllers = [TextEditingController(), TextEditingController()];
+  // to focus specific textField
   late FocusNode focusKanji;
   late FocusNode focusPronun;
 
@@ -38,7 +44,10 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
   @override
   Widget build(BuildContext context) {
 
-    bool _isDisable() {
+    /**
+     * Disable submit button if both kanji and pronun states are empty
+     */
+    bool isDisable() {
       if(kanji == "" && pronun == "") {
         return true;
       }
@@ -105,7 +114,7 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
                   ),
                   TextButton(
                       onPressed: () {
-                        _isDisable() ?
+                        isDisable() ? // Check if form's inputs are empty
                         null :
                         setState(() {
                           modifiableDeck.cards.add(CardType(kanji, pronun));

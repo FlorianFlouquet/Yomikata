@@ -5,6 +5,9 @@ import 'package:yomikata/constants.dart';
 import 'package:yomikata/types/deckType.dart';
 
 class MongoDatabase {
+  /**
+   * Return all documents from the user collection
+   */
   static connect() async {
     var db = await Db.create(MONGO_URL);
     await db.open();
@@ -13,6 +16,9 @@ class MongoDatabase {
     return await collection.find().toList();
   }
 
+  /**
+   * Update a deck with new cards
+   */
   static save(String deckName, DeckType updatedDeck) async {
     var db = await Db.create(MONGO_URL);
     await db.open();
@@ -33,7 +39,11 @@ class MongoDatabase {
       where.eq('name', deckName), modify.set('cards', newCards)
     );
   }
-  
+
+
+  /**
+   * Update a deck with new cards
+   */
   static addDeck() async {
     var db = await Db.create(MONGO_URL);
     await db.open();
