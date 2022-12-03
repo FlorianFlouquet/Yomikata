@@ -112,40 +112,45 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
                       ),
                     ],
                   ),
-                  TextButton(
-                      onPressed: () {
-                        isDisable() ? // Check if form's inputs are empty
-                        null :
-                        setState(() {
-                          modifiableDeck.cards.add(CardType(kanji, pronun));
-                        });
-                        _controllers[0].clear();
-                        _controllers[1].clear();
-                        setState(() {
-                          kanji = "";
-                          pronun = "";
-                        });
-                        focusKanji.requestFocus();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.only(bottom: 19, left: 35, top: 19, right: 35),
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
+                  ElevatedButton(
+                    onPressed: () {
+                      isDisable() ? // Check if form's inputs are empty
+                      null :
+                      setState(() {
+                        modifiableDeck.cards.add(CardType(kanji, pronun));
+                      });
+                      _controllers[0].clear();
+                      _controllers[1].clear();
+                      setState(() {
+                        kanji = "";
+                        pronun = "";
+                      });
+                      focusKanji.requestFocus();
+                    },
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Color(0xff670D0D)),
+                        )
                       ),
-                      child: const Text("ADD")
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      foregroundColor: MaterialStateProperty.all(Color(0xff670D0D)),
+                    ),
+                    child: const Icon(Icons.add),
                   ),
                 ],
               ),
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 20),
+            margin: EdgeInsets.only(top: 10, bottom: 10),
             child: ElevatedButton(
                 onPressed: () {
                   widget.update(modifiableDeck.name, modifiableDeck);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
+                  backgroundColor: Color(0xff670D0D),
                   shape: RoundedRectangleBorder(),
                   padding: EdgeInsets.all(20),
                 ),
@@ -166,7 +171,7 @@ class _DeckMakerPageState extends State<DeckMakerPage> {
           ),
           Column(
             children: modifiableDeck.cards.mapIndexed((index, card) =>
-              KanjiDisplay(index: index, kanji: card.kanji, pronun: card.pronun)
+                KanjiDisplay(index: index, kanji: card.kanji, pronun: card.pronun)
             ).toList(),
           ),
         ],
